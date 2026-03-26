@@ -1,17 +1,61 @@
 ---
+export const prerender = false
 
+import MarketingFeature from '../components/MarketingFeature.astro'
+import SiteLayout from '../layouts/SiteLayout.astro'
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<SiteLayout>
+  <main class="mx-auto flex min-h-screen max-w-5xl flex-col gap-10 px-6 py-16 text-slate-900">
+    <div class="space-y-4">
+      <p class="text-sm font-semibold tracking-[0.2em] text-sky-700 uppercase">Website Route</p>
+      <h1 class="text-5xl font-semibold tracking-tight text-balance">Tailwind marketing page at <code>/</code></h1>
+      <p class="max-w-2xl text-lg leading-8 text-slate-600">
+        This page should keep normal website styles. Starlight reset CSS should only affect <code>/docs</code>.
+      </p>
+      <a href="/docs/" class="inline-flex w-fit items-center rounded-full bg-slate-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-slate-800">
+        Open docs
+      </a>
+    </div>
+
+    <MarketingFeature />
+
+    <section class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm shadow-slate-200/60">
+      <p class="mb-4 text-sm text-slate-500">
+        The elements below intentionally rely on browser defaults. If the Starlight reset leaks onto this page,
+        the heading and paragraph margins collapse to <code>0px</code>.
+      </p>
+
+      <h1 id="native-heading">Plain H1 on the website route</h1>
+      <p id="native-paragraph">This paragraph should keep browser default top and bottom margins.</p>
+      <button id="native-button" type="button">Plain button</button>
+
+      <pre id="debug-output" class="mt-6 overflow-x-auto rounded-2xl bg-slate-950 p-4 text-sm text-slate-100"></pre>
+    </section>
+  </main>
+
+  <script is:inline>
+    const heading = document.getElementById('native-heading')
+    const paragraph = document.getElementById('native-paragraph')
+    const output = document.getElementById('debug-output')
+
+    if (heading && paragraph && output) {
+      const bodyStyles = getComputedStyle(document.body)
+      const headingStyles = getComputedStyle(heading)
+      const paragraphStyles = getComputedStyle(paragraph)
+
+      output.textContent = JSON.stringify(
+        {
+          bodyFontFamily: bodyStyles.fontFamily,
+          bodyBackgroundColor: bodyStyles.backgroundColor,
+          headingMarginTop: headingStyles.marginTop,
+          headingMarginBottom: headingStyles.marginBottom,
+          paragraphMarginTop: paragraphStyles.marginTop,
+          paragraphMarginBottom: paragraphStyles.marginBottom,
+        },
+        null,
+        2,
+      )
+    }
+  </script>
+</SiteLayout>

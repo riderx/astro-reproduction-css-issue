@@ -1,43 +1,51 @@
-# Astro Starter Kit: Minimal
+# Astro 6 + Starlight Reset Repro
 
-```sh
-npm create astro@latest -- --template minimal
+Minimal reproduction for a style leak where Starlight reset CSS appears on non-doc routes.
+
+## Stack
+
+- Astro `6.1.0`
+- `@astrojs/starlight` `0.38.2`
+- `@astrojs/cloudflare` `13.1.4`
+- Tailwind CSS v4 via `@tailwindcss/vite`
+- `@astrojs/starlight-tailwind`
+
+## Routes
+
+- `/` is a regular Astro page using a custom layout and Tailwind website CSS.
+- `/docs/` is a Starlight page.
+
+## Repro
+
+```bash
+bun install
+bun run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Open:
 
-## 🚀 Project Structure
+- `http://localhost:4321/`
+- `http://localhost:4321/docs/`
 
-Inside of your Astro project, you'll see the following folders and files:
+## What To Check
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+On `/`, the "Plain H1 on the website route" block prints computed styles.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Expected on `/`:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- browser-default heading and paragraph margins
+- website font family from `src/styles/site.css`
+- no Starlight body reset
 
-Any static assets, like images, can be placed in the `public/` directory.
+Unexpected behavior being reproduced:
 
-## 🧞 Commands
+- heading and paragraph margins become `0px`
+- body font/background shift to Starlight values even though the page is not a docs route
 
-All commands are run from the root of the project, from a terminal:
+## Files
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `src/pages/index.astro`: marketing page
+- `src/styles/site.css`: website Tailwind CSS
+- `src/content/docs/docs/index.mdx`: docs route at `/docs/`
+- `src/styles/docs.css`: Starlight Tailwind CSS
+- `astro.config.mjs`: Cloudflare adapter + Starlight + Tailwind config

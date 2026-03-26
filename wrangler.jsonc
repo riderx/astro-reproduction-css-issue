@@ -1,0 +1,5 @@
+{
+  "name": "astro-startlight-tailwind-issue",
+  "compatibility_date": "2025-06-17",
+  "compatibility_flags": ["nodejs_compat"]
+}

@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+
+html {
+  background: #f8fafc;
+}
+
+body {
+  font-family: Georgia, serif;
+  color: #0f172a;
+}
+
+code {
+  border-radius: 999px;
+  background: #e2e8f0;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.875em;
+}
